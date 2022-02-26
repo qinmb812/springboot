@@ -20,7 +20,7 @@ import java.util.Map;
  * 只有这个组件是容器中的组件，才能使用容器提供的@ConfigurationProperties功能
  *      @ConfigurationProperties(prefix = "person") 默认从全局配置文件中获取值
  */
-@PropertySource(value = {"classpath:person.properties"})
+//@PropertySource(value = {"classpath:person.properties"})
 @Component
 @ConfigurationProperties(prefix = "person")
 //@Validated
