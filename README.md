@@ -48,3 +48,10 @@ Correct the classpath of your application so that it contains a single, compatib
 
 解决方法：在解决Bug1的时候没有将之前引入的依赖删除，将这些依赖删除即可。
 
+
+
+# Bug3：*--2022.2.26*
+
+SpringBoot中使用server.context-path=/boot02配置项目访问路径没有生效
+
+解决方法：将配置文件中项目访问路径的配置server.context-path=/boot02修改为server.servlet.context-path=/boot02，即可生效。
