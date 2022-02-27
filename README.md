@@ -58,9 +58,9 @@ SpringBoot中使用server.context-path=/boot02配置项目访问路径没有生�
 
 
 
-# Bug4:*--2022.2.27*
+# Bug4：*--2022.2.27*
 
-```
+```java
 // 记录器
 LoggerFactory.getLogger(getClass());
 ```
@@ -76,7 +76,23 @@ LoggerFactory.getLogger(getClass());
 
 解决方法：写在方法外面会报错，将代码写全后错误会消失，写全代码即可。
 
-```
+```java
 // 记录器
 Logger logger = LoggerFactory.getLogger(getClass());
 ```
+
+
+
+# Bug5：*--2022.2.27*
+
+SpringBoot项目在访问resource下的static包下的js文件时，在浏览器的访问路径地址为：localhost:8080/asserts/js/Chart.min.js，这时一直报404错误。
+
+解决方法：需要先 maven clean,然后重启项目即可。
+
+
+
+# Bug6：*--2022.2.27*
+
+SpringBoot项目在resources下的resources包下添加的favicon.ico，在Google Chrome浏览器中进行访问的时候，图标没有生效。
+
+解决方法：换个浏览器就可以了，比如Firefox、Microsoft Edge。
