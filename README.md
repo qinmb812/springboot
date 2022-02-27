@@ -55,3 +55,28 @@ Correct the classpath of your application so that it contains a single, compatib
 SpringBoot中使用server.context-path=/boot02配置项目访问路径没有生效
 
 解决方法：将配置文件中项目访问路径的配置server.context-path=/boot02修改为server.servlet.context-path=/boot02，即可生效。
+
+
+
+# Bug4:*--2022.2.27*
+
+```
+// 记录器
+LoggerFactory.getLogger(getClass());
+```
+
+报错：
+
+```debug
+	Cannot resolve symbol 'getLogger'
+	Invalid method declaration; return type required
+	'{' or ';' expected
+	Unexpected token
+```
+
+解决方法：写在方法外面会报错，将代码写全后错误会消失，写全代码即可。
+
+```
+// 记录器
+Logger logger = LoggerFactory.getLogger(getClass());
+```
