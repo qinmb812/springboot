@@ -158,3 +158,24 @@ Process finished with exit code 1
 <thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
 ```
 
+
+
+# Bug9：*--2022.2.28*
+
+SpringBoot项目启动后，直接访问静态资源文件一直出现出现404错误。
+
+解决方法：在自己的配置类中，继承了WebMvcConfigurationSupport类。
+
+```java
+public class MyMvcConfig extends WebMvcConfigurerAdapter {
+public class MyMvcConfig implements WebMvcConfigurer {
+public class MyMvcConfig extends WebMvcConfigurationSupport {
+```
+
+只有在WebMvcConfigurationSupport这个类没有的情况下，才会走SpringBoot的Web自动配置。而在这里的时候，选择了继承了WebMvcConfigurationSupport类，所以代码自动配置失效了。可以选择其它的类，也可以选择添加代码。例如：
+
+```java
+registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+registry.addResourceHandler("/webjars/**") .addResourceLocations("classpath:/META-INF/resources/webjars/");
+```
+
