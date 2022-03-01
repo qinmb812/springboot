@@ -179,3 +179,15 @@ registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
 registry.addResourceHandler("/webjars/**") .addResourceLocations("classpath:/META-INF/resources/webjars/");
 ```
 
+
+
+# Bug10：*--2022.3.1*
+
+SpringBoot项目启动后，在浏览器中第一次进入首页或者被拦截后重定向到首页，会出现以下错误：
+
+```html
+样式表单 http://localhost:8080/crud/webjars/bootstrap/4.0.0/css/bootstrap.css 未载入，因为它的 MIME 类型 "text/html" 不是 "text/css"。
+样式表单 http://localhost:8080/crud/asserts/css/signin.css 未载入，因为它的 MIME 类型 "text/html" 不是 "text/css"。
+```
+
+发现在只有在每次进入浏览器第一次的时候会出现上面这个问题，之后就不会出现这个问题了。
