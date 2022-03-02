@@ -191,3 +191,17 @@ SpringBoot项目启动后，在浏览器中第一次进入首页或者被拦截�
 ```
 
 发现在只有在每次进入浏览器第一次的时候会出现上面这个问题，之后就不会出现这个问题了。
+
+
+
+# Bug11：*--2022.3.2*
+
+SpringBoot项目启动后，更新表数据 ，发送put请求不起作用，控制台每次都是走post请求。
+
+解决方法：因为注解@ConditionalOnProperty限制了自动配置，默认false不开启配置，所以页面的put提交无法使用。需要在application.properties进行配置,才能使put请求生效。如下：
+
+```properties
+# 可以发送put请求的设置开启
+spring.mvc.hiddenmethod.filter.enabled=true
+```
+
