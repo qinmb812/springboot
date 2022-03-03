@@ -9,7 +9,7 @@ Cannot resolve org.springframework.boot:spring-boot-starter-parent:2.5.1
 
 Problems:Unresolved dependency:"org.springframework.boot:spring-boot-starter-parent:jar:2.5.1"
 
-解决方法：在pom.xml文件中的<dependence>标签中的<artifactId>的内容写错了，不应该是spring-boot-starter-parent，而应该是spring-boot-starter-web。
+**解决方法：**在pom.xml文件中的<dependence>标签中的<artifactId>的内容写错了，不应该是spring-boot-starter-parent，而应该是spring-boot-starter-web。
 
 
 
@@ -46,7 +46,7 @@ Action:
 Correct the classpath of your application so that it contains a single, compatible version of org.springframework.beans.factory.support.BeanDefinitionBuilder
 ```
 
-解决方法：在解决Bug1的时候没有将之前引入的依赖删除，将这些依赖删除即可。
+**解决方法：**在解决Bug1的时候没有将之前引入的依赖删除，将这些依赖删除即可。
 
 
 
@@ -54,7 +54,7 @@ Correct the classpath of your application so that it contains a single, compatib
 
 SpringBoot中使用server.context-path=/boot02配置项目访问路径没有生效
 
-解决方法：将配置文件中项目访问路径的配置server.context-path=/boot02修改为server.servlet.context-path=/boot02，即可生效。
+**解决方法：**将配置文件中项目访问路径的配置server.context-path=/boot02修改为server.servlet.context-path=/boot02，即可生效。
 
 
 
@@ -74,7 +74,7 @@ LoggerFactory.getLogger(getClass());
 	Unexpected token
 ```
 
-解决方法：写在方法外面会报错，将代码写全后错误会消失，写全代码即可。
+**解决方法：**写在方法外面会报错，将代码写全后错误会消失，写全代码即可。
 
 ```java
 // 记录器
@@ -87,7 +87,7 @@ Logger logger = LoggerFactory.getLogger(getClass());
 
 SpringBoot项目在访问resource下的static包下的js文件时，在浏览器的访问路径地址为：localhost:8080/asserts/js/Chart.min.js，这时一直报404错误。
 
-解决方法：需要先 maven clean,然后重启项目即可。
+**解决方法：**需要先 maven clean,然后重启项目即可。
 
 
 
@@ -95,7 +95,7 @@ SpringBoot项目在访问resource下的static包下的js文件时，在浏览器
 
 SpringBoot项目在resources下的resources包下添加的favicon.ico，在Google Chrome浏览器中进行访问的时候，图标没有生效。
 
-解决方法：换个浏览器就可以了，比如Firefox、Microsoft Edge。
+**解决方法：**换个浏览器就可以了，比如Firefox、Microsoft Edge。
 
 
 
@@ -105,7 +105,7 @@ Could not find artifact org.thymeleaf:thymeleaf-spring5:jar:3.0.2.RELEASE in ali
 
 Cannot resolve org.thymeleaf:thymeleaf-spring5:3.0.2.RELEASE
 
-解决方法：在[仓库服务 (aliyun.com)](https://developer.aliyun.com/mvn/search)里面搜索thymeleaf-spring5，没有找到这个版本，修改版本就可以了。
+**解决方法：**在[仓库服务 (aliyun.com)](https://developer.aliyun.com/mvn/search)里面搜索thymeleaf-spring5，没有找到这个版本，修改版本就可以了。
 
 
 
@@ -151,7 +151,7 @@ Correct the classpath of your application so that it contains compatible version
 Process finished with exit code 1
 ```
 
-解决方法：在pom.xml文件中的<properties>标签里配置了相关的属性，将下面的代码删除即可。
+**解决方法：**在pom.xml文件中的<properties>标签里配置了相关的属性，将下面的代码删除即可。
 
 ```xml
 <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
@@ -164,7 +164,7 @@ Process finished with exit code 1
 
 SpringBoot项目启动后，直接访问静态资源文件一直出现出现404错误。
 
-解决方法：在自己的配置类中，继承了WebMvcConfigurationSupport类。
+**解决方法：**在自己的配置类中，继承了WebMvcConfigurationSupport类。
 
 ```java
 public class MyMvcConfig extends WebMvcConfigurerAdapter {
@@ -198,10 +198,24 @@ SpringBoot项目启动后，在浏览器中第一次进入首页或者被拦截�
 
 SpringBoot项目启动后，更新表数据 ，发送put请求不起作用，控制台每次都是走post请求。
 
-解决方法：因为注解@ConditionalOnProperty限制了自动配置，默认false不开启配置，所以页面的put提交无法使用。需要在application.properties进行配置,才能使put请求生效。如下：
+**解决方法：**因为注解@ConditionalOnProperty限制了自动配置，默认false不开启配置，所以页面的put提交无法使用。需要在application.properties进行配置,才能使put请求生效。如下：
 
 ```properties
 # 可以发送put请求的设置开启
 spring.mvc.hiddenmethod.filter.enabled=true
+```
+
+
+
+# Bug12：*--2022.3.3*
+
+SpringBoot中在有模板引擎的情况下，自定义错误响应页面，但是exception和message的值获取不到，时间戳timestamp和错误码status却可以获取到。
+
+**解决方法：**主要原因是没有在配置文件里指定，server错误信息要包含异常对象和异常信息（SpringBoot2.0以上的版面需要在配置文件指定）。在properties文件里面加上这两句即可：
+
+```java
+#自定义异常处理页面，异常对象。异常信息
+server.error.include-exception=true
+server.error.include-message=always
 ```
 
