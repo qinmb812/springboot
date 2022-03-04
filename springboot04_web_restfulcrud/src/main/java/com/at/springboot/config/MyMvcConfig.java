@@ -2,8 +2,6 @@ package com.at.springboot.config;
 
 import com.at.springboot.component.LoginHandlerInterceptor;
 import com.at.springboot.component.MyLocaleResolver;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
@@ -14,17 +12,6 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 // public class MyMvcConfig extends WebMvcConfigurerAdapter {   // @deprecated
 public class MyMvcConfig implements WebMvcConfigurer {
-    @Bean
-    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer(){
-        return new WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>() {
-            // 定制嵌入式的servlet容器相关的规则
-            @Override
-            public void customize(ConfigurableServletWebServerFactory factory) {
-                factory.setPort(8083);
-            }
-        };
-    }
-
     //public class MyMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
