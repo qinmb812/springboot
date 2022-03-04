@@ -219,3 +219,36 @@ server.error.include-exception=true
 server.error.include-message=always
 ```
 
+
+
+# Bug13：*--2022.3.4*
+
+SpringBoot2.x中找不到对应的EmbeddedServletContainerCustomizer类。
+
+在SpringBoot2.x中EmbeddedServletContainerCustomizer类已经被替换成WebServerFactoryCustomizer类。
+
+```java
+@FunctionalInterface
+public interface WebServerFactoryCustomizer<T extends WebServerFactory> {
+   /**
+    * Customize the specified {@link WebServerFactory}.
+    * @param factory the web server factory to customize
+    */
+   void customize(T factory);
+}
+```
+
+使用如下：
+
+```java
+@Bean
+public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryWebServerFactoryCustomizer() {
+        return new WebServerFactoryCustomizer<ConfigurableServletWebServerFactory>() {
+            @Override
+            public void customize(ConfigurableServletWebServerFactory factory) {
+                factory.setPort(8081);
+            }
+        };
+}
+```
+
