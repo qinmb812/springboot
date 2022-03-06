@@ -29,3 +29,7 @@ spring:
 #      schema-locations:
 #        - classpath:sql/department.sql
 #        - classpath:sql/employee.sql
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
