@@ -5,6 +5,8 @@ SpringBoot学习
 
 # Bug1：*--2022.2.24*
 
+**错误信息：**
+
 Cannot resolve org.springframework.boot:spring-boot-starter-parent:2.5.1
 
 Problems:Unresolved dependency:"org.springframework.boot:spring-boot-starter-parent:jar:2.5.1"
@@ -14,6 +16,8 @@ Problems:Unresolved dependency:"org.springframework.boot:spring-boot-starter-par
 
 
 # Bug2：*--2022.2.24*
+
+**错误信息：**
 
 ```
 2022-02-24 21:29:23.287 ERROR 14212 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
@@ -52,7 +56,7 @@ Correct the classpath of your application so that it contains a single, compatib
 
 # Bug3：*--2022.2.26*
 
-SpringBoot中使用server.context-path=/boot02配置项目访问路径没有生效
+**问题描述：**SpringBoot中使用server.context-path=/boot02配置项目访问路径没有生效
 
 **解决方法：**将配置文件中项目访问路径的配置server.context-path=/boot02修改为server.servlet.context-path=/boot02，即可生效。
 
@@ -65,7 +69,7 @@ SpringBoot中使用server.context-path=/boot02配置项目访问路径没有生�
 LoggerFactory.getLogger(getClass());
 ```
 
-报错：
+**错误信息：**
 
 ```debug
 	Cannot resolve symbol 'getLogger'
@@ -85,7 +89,7 @@ Logger logger = LoggerFactory.getLogger(getClass());
 
 # Bug5：*--2022.2.27*
 
-SpringBoot项目在访问resource下的static包下的js文件时，在浏览器的访问路径地址为：localhost:8080/asserts/js/Chart.min.js，这时一直报404错误。
+**问题描述：**SpringBoot项目在访问resource下的static包下的js文件时，在浏览器的访问路径地址为：localhost:8080/asserts/js/Chart.min.js，这时一直报404错误。
 
 **解决方法：**需要先 maven clean,然后重启项目即可。
 
@@ -93,13 +97,15 @@ SpringBoot项目在访问resource下的static包下的js文件时，在浏览器
 
 # Bug6：*--2022.2.27*
 
-SpringBoot项目在resources下的resources包下添加的favicon.ico，在Google Chrome浏览器中进行访问的时候，图标没有生效。
+**问题描述：**SpringBoot项目在resources下的resources包下添加的favicon.ico，在Google Chrome浏览器中进行访问的时候，图标没有生效。
 
 **解决方法：**换个浏览器就可以了，比如Firefox、Microsoft Edge。
 
 
 
 # Bug7：*--2022.2.28*
+
+**错误信息：**
 
 Could not find artifact org.thymeleaf:thymeleaf-spring5:jar:3.0.2.RELEASE in aliyunmaven
 
@@ -110,6 +116,8 @@ Cannot resolve org.thymeleaf:thymeleaf-spring5:3.0.2.RELEASE
 
 
 # Bug8：*--2022.2.28*
+
+**错误信息：**
 
 ```java
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
@@ -162,7 +170,7 @@ Process finished with exit code 1
 
 # Bug9：*--2022.2.28*
 
-SpringBoot项目启动后，直接访问静态资源文件一直出现出现404错误。
+**问题描述：**SpringBoot项目启动后，直接访问静态资源文件一直出现出现404错误。
 
 **解决方法：**在自己的配置类中，继承了WebMvcConfigurationSupport类。
 
@@ -183,7 +191,7 @@ registry.addResourceHandler("/webjars/**") .addResourceLocations("classpath:/MET
 
 # Bug10：*--2022.3.1*
 
-SpringBoot项目启动后，在浏览器中第一次进入首页或者被拦截后重定向到首页，会出现以下错误：
+**问题描述：**SpringBoot项目启动后，在浏览器中第一次进入首页或者被拦截后重定向到首页，会出现以下错误：
 
 ```html
 样式表单 http://localhost:8080/crud/webjars/bootstrap/4.0.0/css/bootstrap.css 未载入，因为它的 MIME 类型 "text/html" 不是 "text/css"。
@@ -196,7 +204,7 @@ SpringBoot项目启动后，在浏览器中第一次进入首页或者被拦截�
 
 # Bug11：*--2022.3.2*
 
-SpringBoot项目启动后，更新表数据 ，发送put请求不起作用，控制台每次都是走post请求。
+**问题描述：**SpringBoot项目启动后，更新表数据 ，发送put请求不起作用，控制台每次都是走post请求。
 
 **解决方法：**因为注解@ConditionalOnProperty限制了自动配置，默认false不开启配置，所以页面的put提交无法使用。需要在application.properties进行配置,才能使put请求生效。如下：
 
@@ -209,7 +217,7 @@ spring.mvc.hiddenmethod.filter.enabled=true
 
 # Bug12：*--2022.3.3*
 
-SpringBoot中在有模板引擎的情况下，自定义错误响应页面，但是exception和message的值获取不到，时间戳timestamp和错误码status却可以获取到。
+**问题描述：**SpringBoot中在有模板引擎的情况下，自定义错误响应页面，但是exception和message的值获取不到，时间戳timestamp和错误码status却可以获取到。
 
 **解决方法：**主要原因是没有在配置文件里指定，server错误信息要包含异常对象和异常信息（SpringBoot2.0以上的版面需要在配置文件指定）。在properties文件里面加上这两句即可：
 
@@ -223,9 +231,9 @@ server.error.include-message=always
 
 # Bug13：*--2022.3.4*
 
-SpringBoot2.x中找不到对应的EmbeddedServletContainerCustomizer类。
+**问题描述：**SpringBoot2.x中找不到对应的EmbeddedServletContainerCustomizer类。
 
-在SpringBoot2.x中EmbeddedServletContainerCustomizer类已经被替换成WebServerFactoryCustomizer类。
+**解决方法：**在SpringBoot2.x中EmbeddedServletContainerCustomizer类已经被替换成WebServerFactoryCustomizer类。
 
 ```java
 @FunctionalInterface
@@ -251,4 +259,52 @@ public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServer
         };
 }
 ```
+
+
+
+# Bug14：*--2022.3.6*
+
+**问题描述：**在CentOS 通过docker pull mysql下载mysql镜像并成功启动mysql容器。
+
+当通过windows主机navicat连接虚拟的mysql时报如下错误。Client does not support authentication protocol requested by server; consider upgrading MySQL client.
+
+**解决方法：**通过查看网上别人遇到的相关问题，发现是由于navicat版本的问题，出现连接失败的原因：mysql8 之前的版本中加密规则是mysql_native_password,而在mysql8之后,加密规则是caching_sha2_password。把用户密码登录的加密规则还原成mysql_native_password这种加密方式。
+
+**解决步骤：**
+
+（1） 在CentOS虚拟机中输入命令：**docker exec -it mysql bash** 登录mysql；
+
+（2） 然后输入命令：**mysql -uroot -p**和密码进入MySQL的命令行模式；
+
+（3） 输入相关命令修改相关机密方法。如下：
+
+```shell
+mysql> alter user 'root'@'%' identified by '123456' password expire never;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>  alter user 'root'@'%' identified with mysql_native_password by '123456';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.03 sec)
+```
+
+（4） 再次连接就可以了。
+
+
+
+# Bug15：*--2022.3.6*
+
+**问题描述：**SpringBoot运行schema脚本，一直报错。
+
+**错误信息：**
+
+```java
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-03-06 16:23:11.786 ERROR 5504 --- [           main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'scriptDataSourceInitializer' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceInitializationConfiguration$SharedCredentialsDataSourceInitializationConfiguration.class]: Invocation of init method failed; nested exception is java.lang.IllegalStateException: No schema scripts found at location 'classpath:department.sql'
+```
+
+**解决方法：**点击IDEA上面Maven上面的**Reload All  Maven Projects**。重新加载项目，再启动就可以了。
 
