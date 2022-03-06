@@ -308,3 +308,125 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 
 **解决方法：**点击IDEA上面Maven上面的**Reload All  Maven Projects**。重新加载项目，再启动就可以了。
 
+
+
+# Bug16：*--2022.3.6*
+
+**问题描述：**使用了Druid连接池之后出现下述错误。
+
+**错误信息：**
+
+```java
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-03-06 19:49:12.490 ERROR 14828 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'spring.datasource' to javax.sql.DataSource:
+
+    Property: spring.datasource.filters
+    Value: stat,wall,log4j
+    Origin: class path resource [application.yml] - 21:14
+    Reason: java.lang.ClassNotFoundException: org.apache.log4j.Priority
+
+Action:
+
+Update your application's configuration
+
+2022-03-06 19:49:12.499 ERROR 14828 --- [           main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@1bc72d1] to prepare test instance [com.at.springboot.Springboot06DataJdbcApplicationTests@1ea78b1]
+
+java.lang.IllegalStateException: Failed to load ApplicationContext
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'helloController': Unsatisfied dependency expressed through field 'jdbcTemplate'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: java.lang.NoClassDefFoundError: org/apache/log4j/Priority
+
+Caused by: java.lang.ClassNotFoundException: org.apache.log4j.Priority
+
+java.lang.IllegalStateException: Failed to load ApplicationContext
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'helloController': Unsatisfied dependency expressed through field 'jdbcTemplate'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/autoconfigure/sql/init/DataSourceInitializationConfiguration.class]: Unsatisfied dependency expressed through method 'dataSourceScriptDatabaseInitializer' parameter 0; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: java.lang.IllegalStateException: Unable to set value for property filters
+
+Caused by: java.lang.reflect.InvocationTargetException
+
+Caused by: java.lang.NoClassDefFoundError: org/apache/log4j/Priority
+```
+
+**解决方法：**发现在对应的Controller类中使用了@Autowired注解注入了JDBCTemplate类，将@Autowired注解去掉即可。【这个可能不需要使用，或许可以直接执行Bug17的解决方法】
+
+
+
+# Bug17：*--2022.3.6*
+
+**问题描述：**在解决了Bug16之后，出现下述问题。
+
+**错误信息：**
+
+```java
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-03-06 19:35:07.971 ERROR 9512 --- [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'spring.datasource' to javax.sql.DataSource:
+
+    Property: spring.datasource.filters
+    Value: stat,wall,log4j
+    Origin: class path resource [application.yml] - 21:14
+    Reason: java.lang.ClassNotFoundException: org.apache.log4j.Priority
+
+Action:
+
+Update your application's configuration
+
+2022-03-06 19:35:07.980 ERROR 9512 --- [           main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@1bc72d1] to prepare test instance [com.at.springboot.Springboot06DataJdbcApplicationTests@1d0fc89]
+
+java.lang.IllegalStateException: Failed to load ApplicationContext
+
+Caused by: org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: java.lang.reflect.InvocationTargetException: null
+
+Caused by: java.lang.NoClassDefFoundError: org/apache/log4j/Priority
+
+java.lang.IllegalStateException: Failed to load ApplicationContext
+
+Caused by: org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'druid': Could not bind properties to 'DataSource' : prefix=spring.datasource, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'spring.datasource' to javax.sql.DataSource
+
+Caused by: java.lang.reflect.InvocationTargetException
+```
+
+**解决方法：**在yml文件中配置了日志：**filters: stat,wall,log4j**，而在pom.xml文件中没有引入log4j的相关依赖。在pom.xml文件中引入相关的依赖即可，如下：
+
+```xml
+<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>1.2.17</version>
+</dependency>
+```
+
