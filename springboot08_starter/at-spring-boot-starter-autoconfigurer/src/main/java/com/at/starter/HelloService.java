@@ -1,0 +1,17 @@
+package com.at.starter;
+
+public class HelloService {
+    HelloProperties helloProperties;
+
+    public HelloProperties getHelloProperties() {
+        return helloProperties;
+    }
+
+    public void setHelloProperties(HelloProperties helloProperties) {
+        this.helloProperties = helloProperties;
+    }
+
+    public String sayHelloAt(String name) {
+        return helloProperties.getPrefix() + "-" + name + helloProperties.getSuffix();
+    }
+}
