@@ -430,3 +430,38 @@ Caused by: java.lang.reflect.InvocationTargetException
 </dependency>
 ```
 
+
+
+# Bug18：*--2022.3.17*
+
+**问题描述：**在使用Git提交代码到Github仓库的时候，出现下面问题。
+
+**错误信息：**
+
+```shell
+asus@DESKTOP-UC0L2O3 MINGW64 /d/workspace/springboot_learning (main)
+$ git pull origin main
+kex_exchange_identification: read: Connection reset by peer
+Connection reset by 52.74.223.119 port 22
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+
+**解决方法：**在window防火墙设置22端口1。
+
+1. window10安全中心 --> 防火墙和网络保护 --> 高级设置；
+2. 入站规则 --> 新建规则；
+3. 选择端口，点击下一步；
+4. 端口输入22，点击下一步；
+5. 选择允许连接，点击下一步；
+6. 点击下一步；
+7. 添加名称和描述（随意填写），点击完成。
+
+在配置完成之后，再继续使用 git pull 和 git push 命令即可。
+
+
+
+
+
