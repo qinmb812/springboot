@@ -461,7 +461,7 @@ and the repository exists.
 
 在配置完成之后，再继续使用 git pull 和 git push 命令即可。
 
-
+【或许可以直接先进行git clone命令】
 
 
 
