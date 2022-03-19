@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
+
     @GetMapping("/emp/{id}")
-    public Employee getEmployeeById(@PathVariable Integer id){
-        Employee employee = employeeService.getEmployeeById(id);
-        return employee;
+    public Employee getEmployeeById(@PathVariable Integer id) {
+        return employeeService.getEmployeeById(id);
     }
 }
