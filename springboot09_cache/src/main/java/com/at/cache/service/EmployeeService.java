@@ -27,6 +27,20 @@ public class EmployeeService {
      *      unless：否定缓存；当unless指定的条件为true，方法的返回值就不会被缓存；可以获取到结果进行判断
      *              unless = "#result == null"
      *      sync：是否使用异步模式
+     * 原理：
+     *      1、自动配置类：CacheAutoConfiguration
+     *      2、缓存的配置类
+     *      org.springframework.boot.autoconfigure.cache.GenericCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.JCacheCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.EhCacheCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.HazelcastCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.InfinispanCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.CouchbaseCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.RedisCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.CaffeineCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.SimpleCacheConfiguration
+     *      org.springframework.boot.autoconfigure.cache.NoOpCacheConfiguration
+     *      3、哪个配置类默认生效：SimpleCacheConfiguration
      * @param id
      * @return
      */
