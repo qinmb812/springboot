@@ -3,11 +3,10 @@ package com.at.cache.service;
 import com.at.cache.bean.Employee;
 import com.at.cache.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
+@CacheConfig(cacheNames = "emp")    // 抽取缓存的公共配置
 @Service
 public class EmployeeService {
     @Autowired
@@ -125,5 +124,24 @@ public class EmployeeService {
     public void deleteEmployee(Integer id) {
         System.out.println("deleteEmployee：" + id);
 //        employeeMapper.deleteEmployeeById(id);
+    }
+
+    /**
+     * @Caching 定义复杂的缓存规则
+     *
+     * @param lastName
+     * @return
+     */
+    @Caching(
+            cacheable = {
+                    @Cacheable(value = "emp", key = "#lastName")
+            },
+            put = {
+                    @CachePut(value = "emp", key = "#result.id"),
+                    @CachePut(value = "emp", key = "#result.email")
+            }
+    )
+    public Employee getEmployeeByLastName(String lastName) {
+        return employeeMapper.getEmployeeByLastName(lastName);
     }
 }
