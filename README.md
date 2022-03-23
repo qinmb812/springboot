@@ -465,3 +465,66 @@ and the repository exists.
 
 
 
+# Bug19：*--2022.3.22*
+
+**问题描述：**在使用虚拟机中使用docker安装redis，出现下面问题。
+
+**错误信息：**
+
+```shell
+[root@192 ~]# docker pull registry.docker-cn.com/library/redis
+Using default tag: latest
+Trying to pull repository registry.docker-cn.com/library/redis ... 
+Get https://registry.docker-cn.com/v1/_ping: dial tcp 106.14.52.175:443: i/o timeout
+```
+
+**解决方法：**安装docker中国的redis失败，直接安装redis即可。
+
+
+
+# Bug20：*--2022.3.23*
+
+**问题描述：**在使用虚拟机中使用docker安装redis，出现下面问题。
+
+**错误信息：**
+
+```shell
+[root@192 ~]# docker pull redis
+Using default tag: latest
+Trying to pull repository docker.io/library/redis ... 
+repository docker.io/redis not found: does not exist or no pull access
+```
+
+**解决方法：**导致此问题产生，主要是因为国家把docker国外镜像hub封掉了，导致镜像pull不下来，为此，改用国内的镜像。操作如下：
+
+```shell
+[root@192 ~]# vi /etc/docker/daemon.json
+[root@192 ~]# cat /etc/docker/daemon.json
+{
+  "registry-mirrors": [
+    "https://docker.mirrors.ustc.edu.cn/",
+    "https://hub-mirror.c.163.com",
+    "https://registry.docker-cn.com"
+  ],
+  "insecure-registries": ["10.0.0.12:5000"]
+}
+[root@192 ~]# systemctl restart docker
+[root@192 ~]# docker pull redis
+Using default tag: latest
+Trying to pull repository docker.io/library/redis ... 
+latest: Pulling from docker.io/library/redis
+ae13dd578326: Pull complete 
+e6f25d21ebb3: Pull complete 
+601cc6106ba1: Pull complete 
+5b8be2fd806e: Pull complete 
+950c3791111a: Pull complete 
+567b7ad78092: Pull complete 
+Digest: sha256:81b50efa808d72f7965d4deecea18e42cab2fec25fafca447eb4bda615b9c8e4
+Status: Downloaded newer image for docker.io/redis:latest
+[root@192 ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+docker.io/redis     latest              87c26977fd90        5 days ago          113 MB
+```
+
+这样就可以正常拉取redis镜像了。
+
