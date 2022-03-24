@@ -467,7 +467,7 @@ and the repository exists.
 
 # Bug19：*--2022.3.22*
 
-**问题描述：**在使用虚拟机中使用docker安装redis，出现下面问题。
+**问题描述：**在使用虚拟机中使用docker安装redis，安装registry.docker-cn.com/library/redis，出现下面问题。
 
 **错误信息：**
 
