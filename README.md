@@ -528,3 +528,29 @@ docker.io/redis     latest              87c26977fd90        5 days ago          
 
 这样就可以正常拉取redis镜像了。
 
+
+
+# Bug21：*--2022.3.25*
+
+**问题描述：**在SpringBoot2.x中，自定义CacheManager，运行程序之后，发送相关的请求，然后就出现下面相关的信息。
+
+**错误信息：**
+
+```java
+2022-03-25 21:04:32.901 DEBUG 10012 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Failed to complete request: org.springframework.data.redis.serializer.SerializationException: Could not read JSON: Unexpected character ('¬' (code 172)): expected a valid value (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (byte[])"��\u0000\u0005sr\u0000\u001Acom.at.cache.bean.Employeeq�\u0013\u000E����\u0002\u0000\u0005L\u0000\u0003dIdt\u0000\u0013Ljava/lang/Integer;L\u0000\u0005emailt\u0000\u0012Ljava/lang/String;L\u0000\u0006genderq\u0000~\u0000\u0001L\u0000\u0002idq\u0000~\u0000\u0001L\u0000\u0008lastNameq\u0000~\u0000\u0002xppt\u0000\u000Fzhangsan@at.comsr\u0000\u0011java.lang.Integer\u0012⠤���8\u0002\u0000\u0001I\u0000\u0005valuexr\u0000\u0010java.lang.Number���\u001D\u000B���\u0002\u0000\u0000xp\u0000\u0000\u0000\u0000sq\u0000~\u0000\u0005\u0000\u0000\u0000\u0001t\u0000\u0006张三"; line: 1, column: 2]; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('¬' (code 172)): expected a valid value (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (byte[])"��\u0000\u0005sr\u0000\u001Acom.at.cache.bean.Employeeq�\u0013\u000E����\u0002\u0000\u0005L\u0000\u0003dIdt\u0000\u0013Ljava/lang/Integer;L\u0000\u0005emailt\u0000\u0012Ljava/lang/String;L\u0000\u0006genderq\u0000~\u0000\u0001L\u0000\u0002idq\u0000~\u0000\u0001L\u0000\u0008lastNameq\u0000~\u0000\u0002xppt\u0000\u000Fzhangsan@at.comsr\u0000\u0011java.lang.Integer\u0012⠤���8\u0002\u0000\u0001I\u0000\u0005valuexr\u0000\u0010java.lang.Number���\u001D\u000B���\u0002\u0000\u0000xp\u0000\u0000\u0000\u0000sq\u0000~\u0000\u0005\u0000\u0000\u0000\u0001t\u0000\u0006张三"; line: 1, column: 2]
+2022-03-25 21:04:32.907 ERROR 10012 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.data.redis.serializer.SerializationException: Could not read JSON: Unexpected character ('¬' (code 172)): expected a valid value (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (byte[])"��\u0000\u0005sr\u0000\u001Acom.at.cache.bean.Employeeq�\u0013\u000E����\u0002\u0000\u0005L\u0000\u0003dIdt\u0000\u0013Ljava/lang/Integer;L\u0000\u0005emailt\u0000\u0012Ljava/lang/String;L\u0000\u0006genderq\u0000~\u0000\u0001L\u0000\u0002idq\u0000~\u0000\u0001L\u0000\u0008lastNameq\u0000~\u0000\u0002xppt\u0000\u000Fzhangsan@at.comsr\u0000\u0011java.lang.Integer\u0012⠤���8\u0002\u0000\u0001I\u0000\u0005valuexr\u0000\u0010java.lang.Number���\u001D\u000B���\u0002\u0000\u0000xp\u0000\u0000\u0000\u0000sq\u0000~\u0000\u0005\u0000\u0000\u0000\u0001t\u0000\u0006张三"; line: 1, column: 2]; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('¬' (code 172)): expected a valid value (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (byte[])"��\u0000\u0005sr\u0000\u001Acom.at.cache.bean.Employeeq�\u0013\u000E����\u0002\u0000\u0005L\u0000\u0003dIdt\u0000\u0013Ljava/lang/Integer;L\u0000\u0005emailt\u0000\u0012Ljava/lang/String;L\u0000\u0006genderq\u0000~\u0000\u0001L\u0000\u0002idq\u0000~\u0000\u0001L\u0000\u0008lastNameq\u0000~\u0000\u0002xppt\u0000\u000Fzhangsan@at.comsr\u0000\u0011java.lang.Integer\u0012⠤���8\u0002\u0000\u0001I\u0000\u0005valuexr\u0000\u0010java.lang.Number���\u001D\u000B���\u0002\u0000\u0000xp\u0000\u0000\u0000\u0000sq\u0000~\u0000\u0005\u0000\u0000\u0000\u0001t\u0000\u0006张三"; line: 1, column: 2]] with root cause
+
+com.fasterxml.jackson.core.JsonParseException: Unexpected character ('¬' (code 172)): expected a valid value (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (byte[])"��\u0000\u0005sr\u0000\u001Acom.at.cache.bean.Employeeq�\u0013\u000E����\u0002\u0000\u0005L\u0000\u0003dIdt\u0000\u0013Ljava/lang/Integer;L\u0000\u0005emailt\u0000\u0012Ljava/lang/String;L\u0000\u0006genderq\u0000~\u0000\u0001L\u0000\u0002idq\u0000~\u0000\u0001L\u0000\u0008lastNameq\u0000~\u0000\u0002xppt\u0000\u000Fzhangsan@at.comsr\u0000\u0011java.lang.Integer\u0012⠤���8\u0002\u0000\u0001I\u0000\u0005valuexr\u0000\u0010java.lang.Number���\u001D\u000B���\u0002\u0000\u0000xp\u0000\u0000\u0000\u0000sq\u0000~\u0000\u0005\u0000\u0000\u0000\u0001t\u0000\u0006张三"; line: 1, column: 2]
+
+2022-03-25 21:04:32.914 DEBUG 10012 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2022-03-25 21:04:32.915 DEBUG 10012 --- [nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#errorHtml(HttpServletRequest, HttpServletResponse)
+2022-03-25 21:04:32.944 DEBUG 10012 --- [nio-8080-exec-1] o.s.w.s.v.ContentNegotiatingViewResolver : Selected 'text/html' given [text/html, text/html;q=0.8]
+2022-03-25 21:04:32.949 DEBUG 10012 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 500
+```
+
+**解决方法：**一般修改CacheManager之后会出现这个问题。只要删除redis保存的数据（或者直接简单粗暴清空redis）即可。

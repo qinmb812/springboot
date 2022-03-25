@@ -27,6 +27,15 @@ import org.springframework.cache.annotation.EnableCaching;
  * 1、安装redis；
  * 2、引入redis的starter；
  * 3、配置redis；
+ * 4、测试缓存
+ *      原理：CacheManager===Cache 缓存组件来实际给缓存中存取数据
+ *      1）、引入redis的starter，容器中保存的是RedisCacheManager；
+ *      2）、RedisCacheManager帮我们创建RedisCache来作为缓存组件；RedisCache通过操作redis缓存数据；
+ *      3）、默认保存数据k-v都是Object；利用序列化保存；如何保存为json
+ *          I、引入了redis的starter，cacheManager变为RedisCacheManager；
+ *          II、默认创建的RedisCacheManager操作redis的时候使用的是RedisTemplate<Object, Object>；
+ *          III、RedisTemplate<Object, Object>是默认使用jdk的序列化机制；
+ *      4）、自定义CacheManager；
  */
 @MapperScan("com.at.cache.mapper")
 @SpringBootApplication
