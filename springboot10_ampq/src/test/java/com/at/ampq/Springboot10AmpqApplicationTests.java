@@ -48,6 +48,6 @@ class Springboot10AmpqApplicationTests {
      */
     @Test
     void sendMsg() {
-        rabbitTemplate.convertAndSend("exchange.fanout", "", new Book("三国演义", "罗贯中"));
+        rabbitTemplate.convertAndSend("exchange.fanout", "", new Book("红楼梦", "曹雪芹"));
     }
 }
