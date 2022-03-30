@@ -583,3 +583,69 @@ java.lang.Exception: Method contextLoads() should be public
 ```
 
 **解决方法：**发现在SpringBoot的版本修改为1.5.9.RELEASE时，测试类的修饰符应该从default变为public，测试方法也应该加上public修饰符。
+
+
+
+# Bug24：*--2022.3.30*
+
+**问题描述：**在SpringBoot项目中，整合SpringBoot Data Elasticsearch时，配置好了相应的属性，运行程序出现了错误。
+
+**错误信息：**
+
+```java
+2022-03-30 19:39:49.916  INFO 8356 --- [           main] org.elasticsearch.client.transport       : [Daredevil] failed to connect to node [{#transport#-1}{192.168.2.6}{192.168.2.6:9300}], removed from nodes list
+org.elasticsearch.transport.ConnectTransportException: [][192.168.2.6:9300] connect_timeout[30s]
+Caused by: java.net.ConnectException: Connection refused: no further information: /192.168.2.6:9300
+```
+
+**解决方法：**发现在虚拟机中的elasticsearch的版本是5.6.12，而SpringBoot对应的版本是2.4.6，这两个版本不匹配。可以升级SpringBoot版本或者安装对应版本的ES。这里是安装对应版本的ES，操作如下：
+
+```shell
+[root@192 ~]# docker images
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+docker.io/rabbitmq        3.9.14-management   decffaa4e8b0        7 days ago          257 MB
+docker.io/redis           latest              87c26977fd90        12 days ago         113 MB
+docker.io/mysql           latest              c1558761f285        3 weeks ago         519 MB
+docker.io/tomcat          latest              7a287e4562ea        4 weeks ago         680 MB
+docker.io/elasticsearch   latest              5acf0e8da90b        3 years ago         486 MB
+[root@192 ~]# docker pull elasticsearch:2.4.6
+Trying to pull repository docker.io/library/elasticsearch ... 
+2.4.6: Pulling from docker.io/library/elasticsearch
+05d1a5232b46: Already exists 
+5cee356eda6b: Already exists 
+89d3385f0fd3: Already exists 
+65dd87f6620b: Already exists 
+78a183a01190: Already exists 
+1a4499c85f97: Already exists 
+2c9d39b4bfc1: Already exists 
+1b1cec2222c9: Already exists 
+59ff4ce9df68: Already exists 
+1976bc3ee432: Already exists 
+a27899b7a5b5: Pull complete 
+b0fc7d2c927a: Pull complete 
+6d94b96bbcd0: Pull complete 
+6f5bf40725fd: Pull complete 
+2bf2a528ae9a: Pull complete 
+Digest: sha256:41ed3a1a16b63de740767944d5405843db00e55058626c22838f23b413aa4a39
+Status: Downloaded newer image for docker.io/elasticsearch:2.4.6
+[root@192 ~]# docker images
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+docker.io/rabbitmq        3.9.14-management   decffaa4e8b0        7 days ago          257 MB
+docker.io/redis           latest              87c26977fd90        12 days ago         113 MB
+docker.io/mysql           latest              c1558761f285        3 weeks ago         519 MB
+docker.io/tomcat          latest              7a287e4562ea        4 weeks ago         680 MB
+docker.io/elasticsearch   latest              5acf0e8da90b        3 years ago         486 MB
+docker.io/elasticsearch   2.4.6               5e9d896dc62c        3 years ago         479 MB
+[root@192 ~]# docker run -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d -p 9201:9200 -p 9301:9300 --name ES0
+2 5e9d896dc62c
+6aa0a08babb94c53d5037795d9715772af82e9b628ed3f3ed6b88428ad1ebd10
+[root@192 ~]# docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS         
+     PORTS                                            NAMES
+6aa0a08babb9        5e9d896dc62c        "/docker-entrypoin..."   8 seconds ago       Up 7 seconds   
+     0.0.0.0:9201->9200/tcp, 0.0.0.0:9301->9300/tcp   ES02
+4b85689ef42c        5acf0e8da90b        "/docker-entrypoin..."   26 hours ago        Up 12 hours    
+     0.0.0.0:9200->9200/tcp, 0.0.0.0:9300->9300/tcp   ES01
+[root@192 ~]# 
+```
+
