@@ -554,3 +554,32 @@ com.fasterxml.jackson.core.JsonParseException: Unexpected character ('¬' (code 
 ```
 
 **解决方法：**一般修改CacheManager之后会出现这个问题。只要删除redis保存的数据（或者直接简单粗暴清空redis）即可。
+
+
+
+# Bug22：*--2022.3.29*
+
+**问题描述：**在SpringBoot项目中，在配置文件application.properties中配置属性spring.elasticsearch.jest.uris的值时报错提示Deprecated configuration property 'spring.elasticsearch.jest.uris'。
+
+**解决方法：**发现我的SpringBoot的版本有点高，为2.6.5，将SpringBoot的版本修改为1.5.9.RELEASE即可。
+
+
+
+# Bug23：*--2022.3.30*
+
+**问题描述：**在SpringBoot项目的测试类中，有@Test注解的测试方法不能运行，直接执行类时报错。
+
+**错误信息：**这是未将测试类的修饰符从default变为public时的运行结果错误信息：
+
+```java
+java.lang.Exception: The class com.at.elastic.Springboot11ElasticApplicationTests is not public.
+java.lang.Exception: Test class should have exactly one public constructor
+```
+
+这是未将测试方法的修饰符从default变为public时的运行结果错误信息：
+
+```java
+java.lang.Exception: Method contextLoads() should be public
+```
+
+**解决方法：**发现在SpringBoot的版本修改为1.5.9.RELEASE时，测试类的修饰符应该从default变为public，测试方法也应该加上public修饰符。
