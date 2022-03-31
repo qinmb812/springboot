@@ -649,3 +649,59 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 [root@192 ~]# 
 ```
 
+
+
+# Bug25：*--2022.3.31*
+
+**问题描述：**在SpringBoot项目整合Spring Security时，自定义认证规则，代码如下：
+
+```java
+ @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // super.configure(auth);
+        auth.inMemoryAuthentication().
+                withUser("zhangsan").password("123456").roles("VIP1", "VIP2")
+                .and()
+                .withUser("lisi").password("123456").roles("VIP2", "VIP3")
+                .and()
+                .withUser("wangwu").password("123456").roles("VIP1", "VIP3");
+    }
+```
+
+**错误信息：**运行程序之后，点击需要权限的内容，进入登录页面，输入用户名和密码之后，出现下面错误：
+
+```java
+2022-03-31 21:41:07.705 ERROR 11680 --- [nio-8080-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
+```
+
+**解决方法：**Spring Security 5.0中新增了多种加密方式，也改变了默认的密码格式。通过阅读官方文档，发现现如今Spring Security中密码的存储格式是“{id}…………”。前面的id是加密方式，id可以是BCrypt、sha256等，后面跟着的是加密后的密码。也就是说，程序拿到传过来的密码的时候，会首先查找被“{”和“}”包括起来的id，来确定后面的密码是被怎么样加密的，如果找不到就认为id是null。官方文档举的例子中是各种加密方式针对同一密码加密后的存储形式，原始密码都是“password”。需要修改一下configure中的代码，我们要将前端传过来的密码进行某种方式加密，Spring Security 官方推荐的是使用BCrypt加密方式。
+
+（1） 在内存中存取密码的修改方式
+
+修改之后如下：
+
+```java
+@Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // super.configure(auth);
+        auth.inMemoryAuthentication().passwordEncoder(new BCryptPasswordEncoder()).
+                withUser("zhangsan").password(new BCryptPasswordEncoder().encode("123456")).roles("VIP1", "VIP2")
+                .and()
+                .withUser("lisi").password(new BCryptPasswordEncoder().encode("123456")).roles("VIP2", "VIP3")
+                .and()
+                .withUser("wangwu").password(new BCryptPasswordEncoder().encode("123456")).roles("VIP1", "VIP3");
+    }
+```
+
+“inMemoryAuthentication().passwordEncoder(new BCryptPasswordEncoder())”，这相当于登陆时用BCrypt加密方式对用户密码进行处理。以前的“.password("123456")”变成了 “.password(new BCryptPasswordEncoder().encode("123"))”，这相当于对内存中的密码进行BCrypt编码加密。如果比对时一致，说明密码正确，才允许登陆。
+
+（2） 在数据库中存取密码的修改方式
+
+如果你用的是在数据库中存储用户名和密码，那么一般是要在用户注册时就使用BCrypt编码将用户密码加密处理后存储在数据库中，并且修改configure()方法，加入“.passwordEncoder(new BCryptPasswordEncoder())”，保证用户登录时使用BCrypt对密码进行处理再与数据库中的密码比对。如下：
+
+```java
+//注入userDetailsService的实现类
+auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
+```
+
