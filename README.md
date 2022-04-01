@@ -705,3 +705,11 @@ java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the i
 auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
 ```
 
+
+
+# Bug26：*--2022.4.1*
+
+**问题描述：**在SpringBoot项目整合Spring Security时，在HTML页面使用SpringSecurity5时，添加xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"后，提示URI is not registered (Settings | Languages & Frameworks | Schemas and DTDs)，并且使用sec的标签没反应。
+
+**解决方法：**命名空间写错了，应该改为xmlns:sec="http://www.thymeleaf.org/extras/spring-security"就可以了。
+
