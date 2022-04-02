@@ -713,3 +713,27 @@ auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder()
 
 **解决方法：**命名空间写错了，应该改为xmlns:sec="http://www.thymeleaf.org/extras/spring-security"就可以了。
 
+
+
+# Bug27：*--2022.4.2*
+
+**问题描述：**使用SmarTTY客户端连接VirtualBox的虚拟机时，一直连接失败，显示连接错误。
+
+**解决方法：**在虚拟机中使用 ip addr 命令，发现IP地址发生了变化。在SmarTTY客户端新建一个SSH连接就可以了。
+
+```shell
+[root@192 ~]# ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN 
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 08:00:27:ed:ee:d6 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.2.7/24 brd 192.168.2.255 scope global dynamic enp0s3
+       valid_lft 86325sec preferred_lft 86325sec
+    inet6 fe80::a00:27ff:feed:eed6/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+
