@@ -737,3 +737,45 @@ auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder()
        valid_lft forever preferred_lft forever
 ```
 
+
+
+# Bug28：*--2022.4.3*
+
+**问题描述：**在分布式项目中，整合SpringBoot、Dubbo时发现在application.properties文件中一直不能使用dubbo的配置和com.alibaba.dubbo.config.annotation.Service的@Service注解显示过时了。
+
+**代码如下：**在pom.xml文件中的配置信息如下：
+
+```xml
+<dependency>
+    <groupId>org.apache.dubbo</groupId>
+    <artifactId>dubbo</artifactId>
+    <version>${dubbo.version}</version>
+</dependency>
+```
+
+**解决方法：**发现自己的pom.xml文件写错了，应该修改为：
+
+```xml
+<dependency>
+    <groupId>com.alibaba.boot</groupId>
+    <artifactId>dubbo-spring-boot-starter</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
+
+
+
+# Bug29：*--2022.4.3*
+
+**问题描述：**在SpringBoot整合Dubbo项目的测试类中，运行程序显示空指针异常。
+
+**错误信息：**
+
+```java
+java.lang.NullPointerException
+	at com.at.user.service.UserService.hello(UserService.java:13)
+	at com.at.user.ConsumerUserApplicationTests.contextLoads(ConsumerUserApplicationTests.java:15)
+```
+
+**解决方法：**在服务提供者的SpringBoot启动类上添加@EnableDubbo(scanBasePackages = "com.at.ticket.service")注解就可以了。
+
