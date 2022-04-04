@@ -779,3 +779,45 @@ java.lang.NullPointerException
 
 **解决方法：**在服务提供者的SpringBoot启动类上添加@EnableDubbo(scanBasePackages = "com.at.ticket.service")注解就可以了。
 
+
+
+# Bug30：*--2022.4.4*
+
+**问题描述：**注册eureka失败；
+
+**错误信息：**
+
+```java
+Cannot determine local hostname
+```
+
+**解决方法：**在配置文件中添加配置：
+
+```properties
+spring.cloud.inetutils.timeout-seconds=10	
+```
+
+
+
+# Bug31：*--2022.4.4*
+
+**问题描述：**启动分布式中的消费者失败，但是一直却不报错。
+
+**代码如下：**在pom.xml文件中的配置信息如下：
+
+```xml
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+</dependency>
+```
+
+**解决方法：**发现自己的pom.xml文件写错了，应该修改为：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
