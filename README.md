@@ -3,6 +3,127 @@ SpringBoot学习
 
 
 
+# 1 Docker命令
+
+## 1.1 基本命令
+
+```shell
+1、检查内核版本，必须是3.10及以上
+uname ‐r
+2、安装docker
+yum install docker
+3、输入y确认安装
+4、启动docker
+[root@localhost ~]# systemctl start docker
+[root@localhost ~]# docker ‐v
+Docker version 1.12.6, build 3e8e77d/1.12.6
+5、开机启动docker
+[root@localhost ~]# systemctl enable docker
+Created symlink from /etc/systemd/system/multi‐user.target.wants/docker.service to
+/usr/lib/systemd/system/docker.service.
+6、停止docker
+systemctl stop docker
+
+7、搜索镜像
+[root@localhost ~]# docker search tomcat
+8、拉取镜像
+[root@localhost ~]# docker pull tomcat
+9、根据镜像启动容器
+docker run ‐‐name mytomcat ‐d tomcat:latest
+10、docker ps
+查看运行中的容器
+11、 停止运行中的容器
+docker stop 容器的id
+12、查看所有的容器
+docker ps ‐a
+13、启动容器
+docker start 容器id
+14、删除一个容器
+docker rm 容器id
+15、启动一个做了端口映射的tomcat
+[root@localhost ~]# docker run ‐d ‐p 8888:8080 tomcat
+‐d：后台运行
+‐p: 将主机的端口映射到容器的一个端口 主机端口:容器内部的端口
+16、为了演示简单关闭了linux的防火墙
+service firewalld status ；查看防火墙状态
+service firewalld stop：关闭防火墙
+17、查看容器的日志
+docker logs container‐name/container‐id
+```
+
+
+
+## 1.2 MySQL
+
+安装和使用：
+
+```shell
+[root@localhost ~]# docker pull mysql
+[root@localhost ~]# docker run ‐p 3306:3306 ‐‐name mysql01 ‐e MYSQL_ROOT_PASSWORD=123456 ‐d mysql
+```
+
+其他的高级操作：
+
+```sh
+docker run ‐‐name mysql03 ‐v /conf/mysql:/etc/mysql/conf.d ‐e MYSQL_ROOT_PASSWORD=my‐secret‐pw
+‐d mysql:tag
+把主机的/conf/mysql文件夹挂载到 mysqldocker容器的/etc/mysql/conf.d文件夹里面
+改mysql的配置文件就只需要把mysql配置文件放在自定义的文件夹下（/conf/mysql）
+docker run ‐‐name some‐mysql ‐e MYSQL_ROOT_PASSWORD=my‐secret‐pw ‐d mysql:tag ‐‐character‐set‐
+server=utf8mb4 ‐‐collation‐server=utf8mb4_unicode_ci
+指定mysql的一些配置参数
+```
+
+
+
+## 1.3 Redis
+
+安装和使用：
+
+```shell
+[root@localhost ~]# docker pull redis
+[root@localhost ~]# docker run -d -p 6379:6379 --name myredis redis
+```
+
+
+
+## 1.4 RabbitMQ
+
+安装和使用：
+
+```shell
+[root@localhost ~]# docker pull rabbitmq:3.9.14-management
+[root@localhost ~]# docker run -d -p 5672:5672 -p 15672:15672 --name myrabbitmq decffaa4e8b0
+```
+
+
+
+## 1.5 ElasticSearch
+
+安装和使用：
+
+```shell
+[root@localhost ~]# docker pull elasticsearch
+[root@localhost ~]# docker run -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d -p 9200:9200 -p 9300:9300 --name ES01 5acf0e8da90b
+[root@localhost ~]# docker pull elasticsearch:2.4.6
+[root@localhost ~]# docker run -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d -p 9201:9200 -p 9301:9300 --name ES02 5e9d896dc62c
+```
+
+
+
+## 1.6 Zookeeper
+
+安装和使用：
+
+```shell
+[root@localhost ~]# docker pull zookeeper
+[root@localhost ~]# docker run --name zk01 -p 2181:2181 --restart always -d 3bfde2963555
+```
+
+
+
+
+
 # Bug1：*--2022.2.24*
 
 **错误信息：**
