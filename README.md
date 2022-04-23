@@ -117,7 +117,7 @@ server=utf8mb4 ‐‐collation‐server=utf8mb4_unicode_ci
 
 ```shell
 [root@localhost ~]# docker pull zookeeper
-[root@localhost ~]# docker run --name zk01 -p 2181:2181 --restart always -d 3bfde2963555
+[root@localhost ~]# docker run --name zk01 -p 2181:2181 -d 3bfde2963555
 ```
 
 
